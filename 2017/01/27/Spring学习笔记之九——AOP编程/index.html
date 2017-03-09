@@ -1,0 +1,805 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="AOP（Aspect-Oriented Programming），名字与 OOP 仅差一个字母，其实它是对 OOP 编程方式的一种补充，翻译过来就是“面向切面编程”。Spring中目前提供了四种类型的AOP支持：
+
+基于代理的经典Spring AOP
+纯POJO切面
+@AspectJ注解驱动的切面
+注入式Aspec
+
+我们这次分享的是基于注解和JavaConfig的AOP。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring学习笔记之九——AOP编程">
+<meta property="og:url" content="http://yoursite.com/2017/01/27/Spring学习笔记之九——AOP编程/index.html">
+<meta property="og:site_name" content="Doge">
+<meta property="og:description" content="AOP（Aspect-Oriented Programming），名字与 OOP 仅差一个字母，其实它是对 OOP 编程方式的一种补充，翻译过来就是“面向切面编程”。Spring中目前提供了四种类型的AOP支持：
+
+基于代理的经典Spring AOP
+纯POJO切面
+@AspectJ注解驱动的切面
+注入式Aspec
+
+我们这次分享的是基于注解和JavaConfig的AOP。">
+<meta property="og:image" content="http://yoursite.com/pic/spring1.png">
+<meta property="og:image" content="http://yoursite.com/pic/spring2.png">
+<meta property="og:updated_time" content="2017-01-26T14:11:24.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring学习笔记之九——AOP编程">
+<meta name="twitter:description" content="AOP（Aspect-Oriented Programming），名字与 OOP 仅差一个字母，其实它是对 OOP 编程方式的一种补充，翻译过来就是“面向切面编程”。Spring中目前提供了四种类型的AOP支持：
+
+基于代理的经典Spring AOP
+纯POJO切面
+@AspectJ注解驱动的切面
+注入式Aspec
+
+我们这次分享的是基于注解和JavaConfig的AOP。">
+<meta name="twitter:image" content="http://yoursite.com/pic/spring1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/27/Spring学习笔记之九——AOP编程/"/>
+
+
+
+
+
+  <title> Spring学习笔记之九——AOP编程 | Doge </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Doge</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/27/Spring学习笔记之九——AOP编程/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Liu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Doge">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Doge" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring学习笔记之九——AOP编程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-27T21:30:28+08:00">
+                2017-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/source/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/27/Spring学习笔记之九——AOP编程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/Spring学习笔记之九——AOP编程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>AOP（Aspect-Oriented Programming），名字与 OOP 仅差一个字母，其实它是对 OOP 编程方式的一种补充，翻译过来就是“面向切面编程”。Spring中目前提供了四种类型的AOP支持：</p>
+<ul>
+<li>基于代理的经典Spring AOP</li>
+<li>纯POJO切面</li>
+<li>@AspectJ注解驱动的切面</li>
+<li>注入式Aspec</li>
+</ul>
+<p>我们这次分享的是基于注解和JavaConfig的AOP。<br><a id="more"></a></p>
+<h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>我们先来看一个例子。</p>
+<p>首先定义一个接口Sleepable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">interface Sleepable &#123;</div><div class="line">    void closeEyes();</div><div class="line">    void sleep();</div><div class="line">    void getUp(boolean isComfortable) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写一个实现类SleepCat</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Component</div><div class="line">public class SleepCat implements Sleepable &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void sleep() &#123;</div><div class="line">        System.out.println(&quot;Cat is sleeping!!&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void closeEyes() &#123;</div><div class="line">        System.out.println(&quot;Cat is closing its eyes!!&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void getUp(boolean isComfortable) throws Exception&#123;</div><div class="line">        if(isComfortable)</div><div class="line">            System.out.println(&quot;Cat has got up&quot;);</div><div class="line">        else</div><div class="line">            throw new Exception();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>写一个切面类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.aspectj.lang.annotation.AfterReturning;</div><div class="line">import org.aspectj.lang.annotation.AfterThrowing;</div><div class="line">import org.aspectj.lang.annotation.Aspect;</div><div class="line">import org.aspectj.lang.annotation.Before;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Aspect</div><div class="line">@Component</div><div class="line">public class SleepHelper &#123;</div><div class="line"></div><div class="line">    @Before(&quot;execution(* org.doge.aopdemo.SleepCat.sleep(..))&quot;)</div><div class="line">    public void beforeSleep() throws Exception&#123;</div><div class="line">        System.out.println(&quot;-----------Ready to sleep-----------&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @AfterReturning(&quot;execution(* org.doge.aopdemo.SleepCat.getUp(..))&quot;)</div><div class="line">    public void afterGetUp()&#123;</div><div class="line">        System.out.println(&quot;-----------Have a good sleep-----------&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @AfterThrowing(&quot;execution(* org.doge.aopdemo.SleepCat.getUp(..))&quot;)</div><div class="line">    public void afterFalseGetUp()&#123;</div><div class="line">        System.out.println(&quot;-----------Have a bad sleep-----------&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码可以在sleep方法执行前先输出 “———–Ready to sleep———–”，在getUp方法执行后输出”———–Have a good sleep———–” 或 “———–Have a bad sleep———–”。</p>
+<p>我们编写 Config类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.springframework.context.annotation.ComponentScan;</div><div class="line">import org.springframework.context.annotation.Configuration;</div><div class="line">import org.springframework.context.annotation.EnableAspectJAutoProxy;</div><div class="line"></div><div class="line">@ComponentScan</div><div class="line">@Configuration</div><div class="line">@EnableAspectJAutoProxy</div><div class="line">public class AopConfig &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写一个测试类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.junit.Test;</div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</div><div class="line"></div><div class="line">public class AopTest &#123;</div><div class="line">    @Test</div><div class="line">    public void aopTest() throws Exception&#123;</div><div class="line">        ApplicationContext context = new AnnotationConfigApplicationContext(AopConfig.class);</div><div class="line">        Sleepable cat = context.getBean(&quot;sleepCat&quot;, Sleepable.class);</div><div class="line">        cat.closeEyes();</div><div class="line">        cat.sleep();</div><div class="line">        try&#123;</div><div class="line">            cat.getUp(true);</div><div class="line">            cat.getUp(false);</div><div class="line">        &#125;</div><div class="line">        catch (Exception  e)&#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Cat is closing its eyes!!</div><div class="line">-----------Ready to sleep-----------</div><div class="line">Cat is sleeping!!</div><div class="line">Cat has got up</div><div class="line">-----------Have a good sleep-----------</div><div class="line">-----------Have a bad sleep-----------</div></pre></td></tr></table></figure>
+<h2 id="定义切面"><a href="#定义切面" class="headerlink" title="定义切面"></a>定义切面</h2><p>观察以上代码，实现类实现了三个方法，闭眼，睡觉，起床，现在我们想要在睡觉或起床 前做一些其他的事情，但我们可以在SleepCat中添加对应的方法，但是，SleepCat类应该只关心睡觉本身，如果加入了一些其他辅助方法，会让这个类变得臃肿。所以我们可以通过切点的方式，将特定的方法绑定到SleepCat的某个方法上 ，即用代理类封装了目标类，当我们调用SleepCat的某些方法时，代理会拦截到方法调用，在执行该方法之前，会执行切面逻辑，从而实现对现有方法的补充 。</p>
+<p><img src="/pic/spring1.png" alt="image"></p>
+<p>那如何定义切面呢？从上述代码可以看到，如果想要声明一个切面，我们只需给它加上@Aspect注解，然后在对应的方法上打上对应的通知注解，下面是常见的通知注解。</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>通知</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@After</td>
+<td>目标方法返回或抛出异常后执行</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>目标方法返回后执行</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>目标方法抛出异常执行</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>将目标方法环绕</td>
+</tr>
+<tr>
+<td>@Before</td>
+<td>目标方法前执行</td>
+</tr>
+</tbody>
+</table>
+<p>通知注解内跟上的是一个表达式，表达的是这个注解的作用对象 ，比如上面的execution表达式，需要用”*”开头，代表返回任意类型，后面的(..)代表参数是任意类型 （也可以填上对应的类型 ），以上代码就测试了After，Before注解。</p>
+<p>下面我们再来测试一下@Around方法 。</p>
+<h2 id="环绕通知"><a href="#环绕通知" class="headerlink" title="环绕通知"></a>环绕通知</h2><p>我们先定义一个CDPlay接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">public interface CDPlayer &#123;</div><div class="line">    void play();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写一个实现类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line"></div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Component(&quot;vinylcd&quot;)</div><div class="line">public class VinylCD implements CDPlayer &#123;</div><div class="line">    @Override</div><div class="line">    public void play() &#123;</div><div class="line">        System.out.println(&quot;Playing&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编写切面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.aspectj.lang.ProceedingJoinPoint;</div><div class="line">import org.aspectj.lang.annotation.Around;</div><div class="line">import org.aspectj.lang.annotation.Aspect;</div><div class="line">import org.aspectj.lang.annotation.Pointcut;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Aspect</div><div class="line">@Component</div><div class="line">public class CDHelper &#123;</div><div class="line">    @Pointcut(&quot;execution(* org.doge.aopdemo.VinylCD.play(..))&quot;)</div><div class="line">    public void point()&#123;&#125;</div><div class="line"></div><div class="line">    @Around(&quot;point()&quot;)</div><div class="line">    public void aroundPlay(ProceedingJoinPoint jp)throws Exception&#123;</div><div class="line">        try&#123;</div><div class="line">            System.out.println(&quot;Open the CD&quot;);</div><div class="line">            jp.proceed();</div><div class="line">            System.out.println(&quot;Close the CD&quot;);</div><div class="line">        &#125;</div><div class="line">        catch (Throwable e)&#123;&#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意，编写@Around注解时，我们需要给方法传入一个ProceedingJoinPoint对象，这个对象是必须要有的，因为你要在通知中用它来调用被通知的方法。通知方法中可以做任何方法，当要将控制权交给被通知的方法时，可以调用ProceedingJoinPoint的processed()方法。</p>
+<p>下面是设置类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.springframework.context.annotation.ComponentScan;</div><div class="line">import org.springframework.context.annotation.Configuration;</div><div class="line">import org.springframework.context.annotation.EnableAspectJAutoProxy;</div><div class="line"></div><div class="line">@ComponentScan</div><div class="line">@Configuration</div><div class="line">@EnableAspectJAutoProxy</div><div class="line">public class CDConfig &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写一个测试类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line"></div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</div><div class="line"></div><div class="line">public class CDTest &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        ApplicationContext context = new AnnotationConfigApplicationContext(CDConfig.class);</div><div class="line">        CDPlayer cd = context.getBean(&quot;vinylcd&quot;, CDPlayer.class);</div><div class="line">        cd.play();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Open the CD</div><div class="line">Playing</div><div class="line">Close the CD</div></pre></td></tr></table></figure>
+<p>可以看出，在play方法调用前后，分别执行了其他的方法。</p>
+<h2 id="通过注解引入新功能"><a href="#通过注解引入新功能" class="headerlink" title="通过注解引入新功能"></a>通过注解引入新功能</h2><p>通过切面，我们甚至还可以为类添加新的功能。我们知道，Java是静态语言，类在编译完成之后，就很难为其增加新的方法。但是我们可以利用Spring代理 ，为目标类引入新的接口 ，当引入接口的方法被调用时，代理会把此调用委托给实现新接口的某个其他对象。实际上，一个Bean的实现被拆分到了多个类中。</p>
+<p><img src="/pic/spring2.png" alt="image"><br>我们来写个测试一下，先写一个要引入的接口Checkable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">public interface Checkbale &#123;</div><div class="line">    void check();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写一个实现类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">public class CheckVinylCD implements Checkbale &#123;</div><div class="line">    @Override</div><div class="line">    public void check() &#123;</div><div class="line">        System.out.println(&quot;Checking CD Player...&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编写切面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line">import org.aspectj.lang.annotation.Aspect;</div><div class="line">import org.aspectj.lang.annotation.DeclareParents;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Aspect</div><div class="line">@Component</div><div class="line">public class CDHelper &#123;</div><div class="line">    @DeclareParents(value = &quot;org.doge.aopdemo.CDPlayer+&quot;,</div><div class="line">            defaultImpl = CheckVinylCD.class)</div><div class="line">    public static Checkbale checkbale;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编写测试方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">package org.doge.aopdemo;</div><div class="line"></div><div class="line"></div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</div><div class="line"></div><div class="line">public class CDTest &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        ApplicationContext context = new AnnotationConfigApplicationContext(CDConfig.class);</div><div class="line">        CDPlayer cd = context.getBean(&quot;vinylcd&quot;, CDPlayer.class);</div><div class="line">        Checkbale  c= (Checkbale)cd;</div><div class="line">        c.check();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Checking CD Player...</div></pre></td></tr></table></figure>
+<p>可以看出，我们通过了切面的方式，为vinylcd类引入了新的接口。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/27/Spring学习笔记之八——Spring Expression Language/" rel="next" title="Spring学习笔记之八——Spring Expression Language">
+                <i class="fa fa-chevron-left"></i> Spring学习笔记之八——Spring Expression Language
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/28/NumPy库的使用/" rel="prev" title="NumPy库的使用">
+                NumPy库的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/27/Spring学习笔记之九——AOP编程/"
+           data-title="Spring学习笔记之九——AOP编程" data-url="http://yoursite.com/2017/01/27/Spring学习笔记之九——AOP编程/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Liu" />
+          <p class="site-author-name" itemprop="name">Liu</p>
+          <p class="site-description motion-element" itemprop="description">Naive</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引例"><span class="nav-number">1.</span> <span class="nav-text">引例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义切面"><span class="nav-number">2.</span> <span class="nav-text">定义切面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环绕通知"><span class="nav-number">3.</span> <span class="nav-text">环绕通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过注解引入新功能"><span class="nav-number">4.</span> <span class="nav-text">通过注解引入新功能</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"fly199701"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

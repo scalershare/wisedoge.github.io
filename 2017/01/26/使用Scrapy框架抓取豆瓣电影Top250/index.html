@@ -1,0 +1,737 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Crawler," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="豆瓣电影是豆瓣网推出的一个电影评价网站，网民可以对任意一部电影进行评价和打分，打分的分值在0-10之间，分数越高代表网民对该电影的认可度越高，而豆瓣电影TOP250（https://movie.douban.com/top250） 是豆瓣电影的一个分值，该网站会实时显示出电影评分在前250的电影信息。我们将利用Scrapy框架对该网站进行抓取。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Scrapy框架抓取豆瓣电影Top250">
+<meta property="og:url" content="http://yoursite.com/2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/index.html">
+<meta property="og:site_name" content="Doge">
+<meta property="og:description" content="豆瓣电影是豆瓣网推出的一个电影评价网站，网民可以对任意一部电影进行评价和打分，打分的分值在0-10之间，分数越高代表网民对该电影的认可度越高，而豆瓣电影TOP250（https://movie.douban.com/top250） 是豆瓣电影的一个分值，该网站会实时显示出电影评分在前250的电影信息。我们将利用Scrapy框架对该网站进行抓取。">
+<meta property="og:updated_time" content="2017-01-26T14:04:55.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Scrapy框架抓取豆瓣电影Top250">
+<meta name="twitter:description" content="豆瓣电影是豆瓣网推出的一个电影评价网站，网民可以对任意一部电影进行评价和打分，打分的分值在0-10之间，分数越高代表网民对该电影的认可度越高，而豆瓣电影TOP250（https://movie.douban.com/top250） 是豆瓣电影的一个分值，该网站会实时显示出电影评分在前250的电影信息。我们将利用Scrapy框架对该网站进行抓取。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/"/>
+
+
+
+
+
+  <title> 使用Scrapy框架抓取豆瓣电影Top250 | Doge </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Doge</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Liu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Doge">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Doge" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Scrapy框架抓取豆瓣电影Top250
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T21:30:20+08:00">
+                2017-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/source/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>豆瓣电影是豆瓣网推出的一个电影评价网站，网民可以对任意一部电影进行评价和打分，打分的分值在0-10之间，分数越高代表网民对该电影的认可度越高，而豆瓣电影TOP250（<a href="https://movie.douban.com/top250%EF%BC%89" target="_blank" rel="external">https://movie.douban.com/top250）</a> 是豆瓣电影的一个分值，该网站会实时显示出电影评分在前250的电影信息。我们将利用Scrapy框架对该网站进行抓取。<br><a id="more"></a></p>
+<h2 id="需要额外安装的库"><a href="#需要额外安装的库" class="headerlink" title="需要额外安装的库"></a>需要额外安装的库</h2><p>scrapy(scrapy已经加入了对Python3的支持)<br><code>pip3 install scrapy</code></p>
+<h2 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h2><hr>
+<h3 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h3><p>我们先开始一个Scrapy项目。<br><code>$ scrapy startproject DouBan</code><br>这时，项目文件夹下会出现如下结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">│  scrapy.cfg</div><div class="line">│</div><div class="line">└─DouBan</div><div class="line">    │  items.py</div><div class="line">    │  pipelines.py</div><div class="line">    │  settings.py</div><div class="line">    │  __init__.py</div><div class="line">    │</div><div class="line">    ├─spiders</div><div class="line">    │  │  __init__.py</div><div class="line">    │  │</div><div class="line">    │  └─__pycache__         </div><div class="line">    │</div><div class="line">    └─__pycache__</div></pre></td></tr></table></figure>
+<p>这些文件分别是:</p>
+<ul>
+<li><code>scrapy.cfg</code>: 项目的配置文件。</li>
+<li><code>DouBan/</code>: 该项目的python模块。之后您将在此加入代码。</li>
+<li><code>DouBan/items.py</code>: 项目中的item文件。</li>
+<li><code>DouBan/pipelines.py</code>: 项目中的pipelines文件。</li>
+<li><code>DouBan/settings.py</code>: 项目的设置文件。</li>
+<li><code>DouBan/spiders/</code>: 放置spider代码的目录。</li>
+</ul>
+<h3 id="Item"><a href="#Item" class="headerlink" title="Item"></a>Item</h3><p><code>Item</code> 是保存爬取到的数据的容器；其使用方法和<code>python字典</code>类似， 并且提供了额外保护机制来避免拼写错误导致的未定义字段错误。</p>
+<p>您可以通过创建一个 <code>scrapy.Item</code> 类， 并且定义类型为 <code>scrapy.Field</code> 的类属性来定义一个<code>Item</code>。</p>
+<p>首先根据需要从豆瓣获取到的数据对<code>item</code>进行建模。 我们需要从<code>spider</code>中获取电影名字，评分，以及该电影的描述。 对此，在item中定义相应的字段。编辑 DouBan 目录中的 items.py 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line">class DoubanItem(scrapy.Item):</div><div class="line">    title = scrapy.Field()</div><div class="line">    info = scrapy.Field()</div><div class="line">    star = scrapy.Field()</div><div class="line">    evaNum = scrapy.Field()</div><div class="line">    quote = scrapy.Field()</div></pre></td></tr></table></figure>
+<h3 id="Spider"><a href="#Spider" class="headerlink" title="Spider"></a>Spider</h3><p><code>Spider</code>是用户编写用于从单个网站(或者一些网站)爬取数据的类,其包含了一个用于下载的初始URL，如何跟进网页中的链接以及如何分析页面中的内容， 提取生成 <code>item</code> 的方法。为了创建一个<code>Spider</code>，您必须继承 <code>scrapy.Spider</code> 类（对于更高级的爬虫，要继<code>scrapy.CrawlSpider</code>类）， 且定义以下三个属性:</p>
+<p><code>name</code>: 用于区别Spider。 该名字必须是唯一的，您不可以为不同的Spider设定相同的名字。<br><code>start_urls</code>: 包含了Spider在启动时进行爬取的url列表。 因此，第一个被获取到的页面将是其中之一。 后续的URL则从初始的URL获取到的数据中提取。<br><code>parse()</code> :<code>parse()</code>是spider的一个方法。 被调用时，每个初始URL完成下载后生成的 Response 对象将会作为唯一的参数传递给该函数。 该方法负责解析返回的数据(response data)，提取数据(生成item)以及生成需要进一步处理的URL的 Request 对象。<br>以下为我们的一个<code>Spider</code>代码，保存在 <code>DouBan/spiders</code> 目录下的 <code>douban.py</code> 文件中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">from DouBan.items import DoubanItem</div><div class="line">from scrapy.spiders import CrawlSpider</div><div class="line">from scrapy.selector import Selector</div><div class="line">from scrapy.http import Request</div><div class="line"></div><div class="line">class DouBanSpider(CrawlSpider):</div><div class="line">    name = &apos;doubanSpider&apos;</div><div class="line">    start_urls = [</div><div class="line">    &apos;http://movie.douban.com/top250&apos;,</div><div class="line">    ]</div><div class="line">    </div><div class="line">    t_url = &apos;http://movie.douban.com/top250&apos;</div><div class="line"></div><div class="line">    def parse(self, response):</div><div class="line">        item = DoubanItem()</div><div class="line">        sel = Selector(response)</div><div class="line"></div><div class="line">        movie_infos = sel.xpath(&apos;//div[@class=&quot;info&quot;]&apos;)</div><div class="line">        for movie_info in movie_infos:</div><div class="line">            title = movie_info.xpath(&apos;div[@class=&quot;hd&quot;]/a/span[@class=&quot;title&quot;]/text()&apos;).extract()</div><div class="line">            # 电影介绍内有许多无关字符，所以需要清理一下</div><div class="line">            t_info = movie_info.xpath(&apos;div[@class=&quot;bd&quot;]/p/text()&apos;).extract()</div><div class="line">            t1_info = t_info[0].replace(&quot;\n&quot;, &apos;&apos;)</div><div class="line">            info = t1_info.replace(&quot; &quot;, &apos;&apos;)</div><div class="line">            star = movie_info.xpath(&apos;div[@class=&quot;bd&quot;]/div[@class=&quot;star&quot;]/span[@class=&quot;rating_num&quot;]/text()&apos;).extract()</div><div class="line">            evaNum = movie_info.xpath(&apos;div[@class=&quot;bd&quot;]/div[@class=&quot;star&quot;]/span[4]/text()&apos;).extract()</div><div class="line">            quote = movie_info.xpath(&apos;div[@class=&quot;bd&quot;]/p[@class=&quot;quote&quot;]/span/text()&apos;).extract()</div><div class="line"></div><div class="line">            item[&apos;title&apos;] = title</div><div class="line">            item[&apos;info&apos;] = info</div><div class="line">            item[&apos;star&apos;] = star</div><div class="line">            item[&apos;evaNum&apos;] = evaNum</div><div class="line">            item[&apos;quote&apos;] = quote</div><div class="line"></div><div class="line">            yield item</div><div class="line"></div><div class="line">        url = sel.xpath(&apos;//span[@class=&quot;next&quot;]/link/@href&apos;).extract()</div><div class="line">        if url:</div><div class="line">            url = url[0]</div><div class="line">            print(url)</div><div class="line">            yield Request(self.t_url + url, callback=self.parse)</div></pre></td></tr></table></figure>
+<h3 id="Item-Pipeline"><a href="#Item-Pipeline" class="headerlink" title="Item Pipeline"></a>Item Pipeline</h3><p>当<code>Item</code>在<code>Spider</code>中被收集之后，它将会被传递到<code>Item Pipeline</code>，一些组件会按照一定的顺序执行对<code>Item</code>的处理。</p>
+<p>每个<code>item pipeline</code>组件是实现了简单方法的Python类。他们接收到<code>Item</code>并通过它执行一些行为，同时也决定此<code>Item</code>是否继续通过<code>pipeline</code>，或是被丢弃而不再进行处理。</p>
+<p>以下是<code>item pipeline</code>的一些典型应用：</p>
+<ul>
+<li>清理HTML数据</li>
+<li>验证爬取的数据(检查item包含某些字段)</li>
+<li>查重(并丢弃)</li>
+<li>将爬取结果保存到数据库中</li>
+</ul>
+<p>我们编写一个自己的<code>Pipeline</code>，用来将抓取的内容存入到<code>MongoDB</code>中，在<code>Douban/pipelines.py</code>中写入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">from pymongo import MongoClient</div><div class="line">from scrapy.conf import settings</div><div class="line"></div><div class="line">class DoubanPipeline(object):</div><div class="line">    def __init__(self):</div><div class="line">        host = settings[&apos;MONGODB_HOST&apos;]</div><div class="line">        port = settings[&apos;MONGODB_PORT&apos;]</div><div class="line">        name = settings[&apos;MONGODB_DBNAME&apos;]</div><div class="line">        client = MongoClient(host=host,port=port)</div><div class="line">        db = client[name]</div><div class="line">        self.col = db[settings[&apos;MONGODB_DOCNAME&apos;]]</div><div class="line">    def process_item(self, item, spider):</div><div class="line">        movieInfo = dict(item)</div><div class="line">        self.col.insert(movieInfo)</div><div class="line">        return item</div></pre></td></tr></table></figure>
+<h3 id="Settings"><a href="#Settings" class="headerlink" title="Settings"></a>Settings</h3><p>为了启用<code>Pipeline</code>组件，你必须将它的类添加到 <code>ITEM_PIPELINES</code> 配置，在<code>DouBan/setting.py</code>中写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ITEM_PIPELINES = &#123;</div><div class="line">    &apos;DouBan.pipelines.DoubanPipeline&apos;: 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同时，还要把<code>MongoDB</code>的对应参数写入<code>DouBan/setting.py</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ROBOTSTXT_OBEY = True</div><div class="line">COOKIES_ENABLED = True</div><div class="line">MONGODB_HOST = &apos;127.0.0.1&apos;</div><div class="line">MONGODB_PORT = 27017</div><div class="line">MONGODB_DBNAME = &apos;DouBan&apos;</div><div class="line">MONGODB_DOCNAME = &apos;Movies&apos;</div></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>将文件夹定位到项目目录，输入<br><code>scrapy crawl doubanSpider</code><br>爬虫就会开始运行，等待程序运行完之后，打开MongoDB，就能看到被抓下来的电影信息了。</p>
+<hr>
+<p>查看完整代码请<a href="https://github.com/WiseDoge/Spider_Hub" target="_blank" rel="external">点击此处</a><br>本文参考于scrapy官方文档，查看完整Scrapy官方文档请<a href="http://doc.scrapy.org/en/latest/index.html" target="_blank" rel="external">点击此处</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Crawler/" rel="tag"># Crawler</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/26/维基百科高频词排名/" rel="next" title="维基百科高频词排名">
+                <i class="fa fa-chevron-left"></i> 维基百科高频词排名
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/26/利用Python-Redis打造简易的实时聊天室/" rel="prev" title="利用Python-Redis打造简易的实时聊天室">
+                利用Python-Redis打造简易的实时聊天室 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/"
+           data-title="使用Scrapy框架抓取豆瓣电影Top250" data-url="http://yoursite.com/2017/01/26/使用Scrapy框架抓取豆瓣电影Top250/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Liu" />
+          <p class="site-author-name" itemprop="name">Liu</p>
+          <p class="site-description motion-element" itemprop="description">Naive</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要额外安装的库"><span class="nav-number">1.</span> <span class="nav-text">需要额外安装的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码编写"><span class="nav-number">2.</span> <span class="nav-text">代码编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动项目"><span class="nav-number">2.1.</span> <span class="nav-text">启动项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Item"><span class="nav-number">2.2.</span> <span class="nav-text">Item</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spider"><span class="nav-number">2.3.</span> <span class="nav-text">Spider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Item-Pipeline"><span class="nav-number">2.4.</span> <span class="nav-text">Item Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Settings"><span class="nav-number">2.5.</span> <span class="nav-text">Settings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行"><span class="nav-number">3.</span> <span class="nav-text">运行</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"fly199701"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="通常，当我们制作了一个Python模块之后，要想在其他项目中使用，我们可以把该模块复制到其他项目的目录中，然后再import来使用。但是，如果我们有许多个项目都要使用这个模块，岂不是要将它复制很多份了？为了解决这个问题，我们可以将模块打包，然后加入到系统环境变量里，这样就可以直接在项目中import了。那如果，我们希望将自己的包分享给网络上的其他用户使用，该怎么做呢？方法有很多，比如用百度云，发邮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将自己的Python模块的打包并发布到Pypi">
+<meta property="og:url" content="http://yoursite.com/2017/01/26/将自己的Python模块的打包并发布到Pypi/index.html">
+<meta property="og:site_name" content="Doge">
+<meta property="og:description" content="通常，当我们制作了一个Python模块之后，要想在其他项目中使用，我们可以把该模块复制到其他项目的目录中，然后再import来使用。但是，如果我们有许多个项目都要使用这个模块，岂不是要将它复制很多份了？为了解决这个问题，我们可以将模块打包，然后加入到系统环境变量里，这样就可以直接在项目中import了。那如果，我们希望将自己的包分享给网络上的其他用户使用，该怎么做呢？方法有很多，比如用百度云，发邮">
+<meta property="og:updated_time" content="2017-01-26T14:04:55.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将自己的Python模块的打包并发布到Pypi">
+<meta name="twitter:description" content="通常，当我们制作了一个Python模块之后，要想在其他项目中使用，我们可以把该模块复制到其他项目的目录中，然后再import来使用。但是，如果我们有许多个项目都要使用这个模块，岂不是要将它复制很多份了？为了解决这个问题，我们可以将模块打包，然后加入到系统环境变量里，这样就可以直接在项目中import了。那如果，我们希望将自己的包分享给网络上的其他用户使用，该怎么做呢？方法有很多，比如用百度云，发邮">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/26/将自己的Python模块的打包并发布到Pypi/"/>
+
+
+
+
+
+  <title> 将自己的Python模块的打包并发布到Pypi | Doge </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Doge</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/26/将自己的Python模块的打包并发布到Pypi/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Liu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Doge">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Doge" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                将自己的Python模块的打包并发布到Pypi
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T21:30:19+08:00">
+                2017-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/source/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/26/将自己的Python模块的打包并发布到Pypi/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/26/将自己的Python模块的打包并发布到Pypi/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>通常，当我们制作了一个Python模块之后，要想在其他项目中使用，我们可以把该模块复制到其他项目的目录中，然后再<code>import</code>来使用。但是，如果我们有许多个项目都要使用这个模块，岂不是要将它复制很多份了？为了解决这个问题，我们可以将模块打包，然后加入到系统环境变量里，这样就可以直接在项目中<code>import</code>了。那如果，我们希望将自己的包分享给网络上的其他用户使用，该怎么做呢？方法有很多，比如用百度云，发邮件，发QQ附件等等……。但是最优雅和最Pythonic的方法是将包发布到Pypi，其他用户只需<code>pip install +包名</code>就可以安装并使用了。下面我们将介绍如何将模块的打包和发布到Pypi。<br><a id="more"></a></p>
+<h2 id="将模块打包"><a href="#将模块打包" class="headerlink" title="将模块打包"></a>将模块打包</h2><p>模块打包，我们需要用到的第三方模块是setuptools，我们可以通过pip来安装:</p>
+<p><code>pip install setuptools</code></p>
+<p>安装好setuptools后，我们建立一个项目文件夹demo（正式的生产环境中，项目文件夹和内层的包文件夹要用同样的名字）。然后我们将自己的包放入到这个文件夹内，然后，我们在这个文件夹下放入包的README，开源协议，其他需要的外部文件。以及再新建一个名为setup.py的空的Python文件，到现在为止，demo文件夹的目录树如下（zquery文件夹就是要打包的模块）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">demo</div><div class="line"> │  LICENSE</div><div class="line"> │  README.md</div><div class="line"> │  run.py</div><div class="line"> │  setup.py</div><div class="line"> │</div><div class="line"> └─zquery</div></pre></td></tr></table></figure>
+<p>然后我们开始编写安装文件，将下面这个模版拷贝到setup.py内，在根据自己的实际情况更改一下即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">from setuptools import setup</div><div class="line"></div><div class="line">setup(</div><div class="line">    name=&apos;name of the package&apos;,</div><div class="line">    version=&apos;your version&apos;,</div><div class="line">    description=&apos;your description&apos;,</div><div class="line">    long_description = &apos;your long description&apos;,</div><div class="line">    author=&apos;your name&apos;,</div><div class="line">    author_email=&apos;your email&apos;,</div><div class="line">    url=&apos;the package`s url&apos;,</div><div class="line">    packages=[</div><div class="line">        &apos;name of the package&apos;</div><div class="line">    ],</div><div class="line">    # py_modules=[&apos;run&apos;],</div><div class="line">    include_package_data=True,</div><div class="line">    platforms=&apos;any&apos;,</div><div class="line">    install_requires=[</div><div class="line">        # install_requires</div><div class="line">    ],</div><div class="line">    # entry_points=&#123;</div><div class="line">    #     &apos;console_scripts&apos;: [&apos;zquery=run:cli&apos;]</div><div class="line">    # &#125;,</div><div class="line">    license=&apos;apache 2.0&apos;,</div><div class="line">    zip_safe=False,</div><div class="line">    classifiers=[</div><div class="line">        &apos;Environment :: Console&apos;,</div><div class="line">        &apos;Programming Language :: Python&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3.1&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3.2&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3.3&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3.4&apos;,</div><div class="line">        &apos;Programming Language :: Python :: 3.5&apos;,</div><div class="line">        &apos;Programming Language :: Python :: Implementation :: CPython&apos;</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>这样，一个可安装的Python包就制作好了，我们只需要执行 <code>python setup.py install</code> 就可以将该包安装了。</p>
+<h2 id="将模块发布到Pypi"><a href="#将模块发布到Pypi" class="headerlink" title="将模块发布到Pypi"></a>将模块发布到Pypi</h2><p>首先要到Pypi的官网<a href="https://pypi.python.org/pypi%EF%BC%8C%E7%82%B9%E5%87%BB%E5%8F%B3%E4%BE%A7%E7%9A%84Register%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AAPypi%E5%B8%90%E5%8F%B7%E3%80%82" target="_blank" rel="external">https://pypi.python.org/pypi，点击右侧的Register注册一个Pypi帐号。</a></p>
+<p>然后我们在回到项目文件夹，运行 <code>python setup.py sdist</code></p>
+<p>这时，项目文件夹下会生成一个名为dist的文件夹，这个文件夹内保存的就是一个已经压缩好了的，并且可以上传到Pypi上的包了。同时还会产生一个名为 <code>包名.egg-info</code> 的文件夹，这里面包含的就是一些包的基本信息。</p>
+<p>这些都准备好了之后，我们就可以准备上传了，我们运行<code>python setup.py register sdist upload</code>，然后按照提示就可以上传了，需要注意的是，第一次使用该命令时，会要求你输入刚刚注册的帐号和密码，输入完之后，系统会在本地存有一个记录文件，记录着你的帐号密码，以后再上传的时候，就无需再次输入帐号密码了。</p>
+<p>文件上传好了之后，等待大概一个小时左右，互联网上的其他用户就可以通过 <code>pip install +包名</code> 来安装你的包了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/26/基于异步IO的简单的Python爬虫模型/" rel="next" title="基于异步IO的简单的Python爬虫模型">
+                <i class="fa fa-chevron-left"></i> 基于异步IO的简单的Python爬虫模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/26/维基百科高频词排名/" rel="prev" title="维基百科高频词排名">
+                维基百科高频词排名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/26/将自己的Python模块的打包并发布到Pypi/"
+           data-title="将自己的Python模块的打包并发布到Pypi" data-url="http://yoursite.com/2017/01/26/将自己的Python模块的打包并发布到Pypi/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Liu" />
+          <p class="site-author-name" itemprop="name">Liu</p>
+          <p class="site-description motion-element" itemprop="description">Naive</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#将模块打包"><span class="nav-number">1.</span> <span class="nav-text">将模块打包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将模块发布到Pypi"><span class="nav-number">2.</span> <span class="nav-text">将模块发布到Pypi</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"fly199701"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
