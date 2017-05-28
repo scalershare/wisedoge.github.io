@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Crawler," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -84,16 +84,19 @@
 
 
 
-<meta name="description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
+<meta name="description" content="先导入一下用到的包
+1from multiprocessing import Pool, cpu_count, Process, Queue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用Python实现一个抓取笑话并推送到手机的爬虫">
-<meta property="og:url" content="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/index.html">
+<meta property="og:title" content="利用进程池实现优雅的多核并行运算">
+<meta property="og:url" content="http://wisedoge.github.io/2017/05/28/利用进程池实现优雅的多核并行运算/index.html">
 <meta property="og:site_name" content="Doge">
-<meta property="og:description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
-<meta property="og:updated_time" content="2017-01-26T14:04:55.000Z">
+<meta property="og:description" content="先导入一下用到的包
+1from multiprocessing import Pool, cpu_count, Process, Queue">
+<meta property="og:updated_time" content="2017-05-28T03:25:16.131Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用Python实现一个抓取笑话并推送到手机的爬虫">
-<meta name="twitter:description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
+<meta name="twitter:title" content="利用进程池实现优雅的多核并行运算">
+<meta name="twitter:description" content="先导入一下用到的包
+1from multiprocessing import Pool, cpu_count, Process, Queue">
 
 
 
@@ -121,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/"/>
+  <link rel="canonical" href="http://wisedoge.github.io/2017/05/28/利用进程池实现优雅的多核并行运算/"/>
 
 
 
 
 
-  <title> 利用Python实现一个抓取笑话并推送到手机的爬虫 | Doge </title>
+  <title> 利用进程池实现优雅的多核并行运算 | Doge </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +253,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/">
+  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/05/28/利用进程池实现优雅的多核并行运算/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Liu">
@@ -274,7 +277,7 @@
             
             
               
-                利用Python实现一个抓取笑话并推送到手机的爬虫
+                利用进程池实现优雅的多核并行运算
               
             
           </h1>
@@ -289,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T21:30:40+08:00">
-                2017-01-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-28T11:01:32+08:00">
+                2017-05-28
               </time>
             
 
@@ -330,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/" itemprop="commentCount"></span>
+                <a href="/2017/05/28/利用进程池实现优雅的多核并行运算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/28/利用进程池实现优雅的多核并行运算/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -357,18 +360,26 @@
       
 
       
-        <p>糗事百科（<a href="http://www.qiushibaike.com/%EF%BC%89" target="_blank" rel="external">http://www.qiushibaike.com/）</a> 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。<br><a id="more"></a></p>
-<h2 id="需要额外安装的库"><a href="#需要额外安装的库" class="headerlink" title="需要额外安装的库"></a>需要额外安装的库</h2><p>requests<br><code>pip3 install requests</code><br>BeautifulSoup<br><code>pip3 install bs4</code><br>lxml<br><code>pip3 install lxml</code></p>
-<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><ul>
-<li><code>sendEmail.py</code>：邮件发送模块，用在将消息推送到邮箱。</li>
-<li><code>main.py</code>：主程序，负责抓取信息。</li>
+        <p>先导入一下用到的包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool, cpu_count, Process, Queue</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>在不使用进程池的情况下，要想利用到多核运算，我们可能会写下如下代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">tasks = Queue()</div><div class="line">    <span class="comment"># Put tasks into task queue</span></div><div class="line">    <span class="comment"># ...</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">task_func</span><span class="params">()</span>:</span></div><div class="line">        <span class="comment"># task function</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    </div><div class="line">    pool = []</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(cpu_count()):</div><div class="line">        p = Process(target=task_func)</div><div class="line">        p.start()</div><div class="line">        pool.append(p)</div><div class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> pool:</div><div class="line">        p.join()</div></pre></td></tr></table></figure>
+<p>使用进程池后，我们可以使用下面的代码完成并行计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">tasks = [(<span class="number">1</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">7</span>), (<span class="number">9</span>, <span class="number">10</span>), (<span class="number">11</span>, <span class="number">23</span>)]</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(tup)</span>:</span></div><div class="line">    <span class="keyword">return</span> tup[<span class="number">0</span>] + tup[<span class="number">1</span>]</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    pool = Pool(cpu_count())</div><div class="line">    ans = pool.map(add, tasks)</div><div class="line">    print(ans)</div></pre></td></tr></table></figure>
+<p><code>Pool</code>类构造了一个进程池，Pool.map方法会自动的从池中抽取进程完成运算，并入池。这样，就隐藏了实现的细节，使我们不必在业务逻辑中掺入进程操作的代码。</p>
+<h3 id="一些坑"><a href="#一些坑" class="headerlink" title="一些坑"></a>一些坑</h3><ul>
+<li><p>task function不能使用lambda表达式，下面的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    pool = Pool(cpu_count())</div><div class="line">    ans = pool.map(<span class="keyword">lambda</span> tup: tup[<span class="number">0</span>] + tup[<span class="number">1</span>], tasks)</div><div class="line">    pool.close()</div><div class="line">    pool.join()</div></pre></td></tr></table></figure>
+<p>会报错。</p>
+<p><code>_pickle.PicklingError: Can&#39;t pickle &lt;function &lt;lambda&gt; at 0x000001FFC5823E18&gt;: attribute lookup &lt;lambda&gt; on __main__ failed</code></p>
+</li>
+<li><p>池的定义必须放到函数中而不是全局中，下面的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">tasks = [(<span class="number">1</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">7</span>), (<span class="number">9</span>, <span class="number">10</span>), (<span class="number">11</span>, <span class="number">23</span>)]</div><div class="line">pool = Pool(cpu_count())</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(tup)</span>:</span></div><div class="line">    <span class="keyword">return</span> tup[<span class="number">0</span>] + tup[<span class="number">1</span>]</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    ans = pool.map(add, tasks)</div><div class="line">    print(ans)</div></pre></td></tr></table></figure>
+<p>会报运行时错误</p>
+</li>
 </ul>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>每隔12小时就运行一次爬虫，爬虫将对糗事百科的前5页进行抓取，然后将抓取的内容打包，并推送到自己的手机。</p>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在自己的手机上装一个可接收实时推送的邮箱软件（如网易邮箱大师）。<br>将<code>sendEmail.py</code>内的收件箱和发件箱配置好。<br>将爬虫文件放在一个可以24小时开机的主机（推荐使用云服务器）上，运行<code>python3 main.py</code>。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><em>sendEmail.py</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import smtplib</div><div class="line">from email.mime.text import MIMEText</div><div class="line"></div><div class="line">def sendme(title, text):</div><div class="line">    msg = MIMEText(text)</div><div class="line">    msg[&apos;Subject&apos;] = title</div><div class="line">    msg[&apos;From&apos;] = &quot;此处填入你用来发送邮件用的邮箱&quot;</div><div class="line">    msg[&apos;To&apos;] = &quot;此处填入你的接收端邮箱&quot;</div><div class="line">    s = smtplib.SMTP(&apos;smtp.126.com&apos;)</div><div class="line">    s.login(&apos;此处填入发件箱用户名&apos;, &apos;此处填入发件箱密码&apos;)</div><div class="line">    s.send_message(msg)</div><div class="line">    s.quit()</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    sendme(&quot;Hello World&quot;, &quot;Welcome&quot;)</div></pre></td></tr></table></figure>
-<p><em>main.py</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">from bs4 import BeautifulSoup</div><div class="line">from sendEmail import sendme</div><div class="line"></div><div class="line">import requests</div><div class="line">import lxml</div><div class="line">import time</div><div class="line">def crawl(url):</div><div class="line">    try:</div><div class="line">        html = requests.get(url)</div><div class="line">    except:</div><div class="line">        with open(&quot;log.log&quot;,&quot;a&quot;) as file:</div><div class="line">            file.write(&quot;Http error on &quot; + time.ctime())</div><div class="line">        time.sleep(60)</div><div class="line">        return None</div><div class="line">    soup = BeautifulSoup(html.text, &apos;lxml&apos;)</div><div class="line">    data_list = []</div><div class="line">    for cont in soup.find_all(&quot;div&quot;, &#123;&quot;class&quot;:&quot;content&quot;&#125;):</div><div class="line">        raw_data = cont.get_text()</div><div class="line">        data = raw_data.replace(&quot;\n&quot;,&quot;&quot;)</div><div class="line">        data_list.append(data)</div><div class="line">    return data_list</div><div class="line"></div><div class="line">def sendToMe(data_list):</div><div class="line">    email_text  = &apos;&apos;</div><div class="line">    for i in data_list:</div><div class="line">        email_text += (i + &quot;\n\n&quot;)</div><div class="line">    try:</div><div class="line">        sendme(time.ctime(), email_text)</div><div class="line">    except:</div><div class="line">        with open(&quot;log.log&quot;,&quot;a&quot;) as file:</div><div class="line">            file.write(&quot;Send email error on &quot; + time.ctime())</div><div class="line">    print(&quot;success&quot;,time.ctime())</div><div class="line"></div><div class="line">def do():</div><div class="line">    data_list = []</div><div class="line">    for i in range(1,6):</div><div class="line">        url = &apos;http://www.qiushibaike.com/8hr/page/%s/?s=4906081&apos;%str(i)</div><div class="line">        temp_data = crawl(url)</div><div class="line">        data_list.extend(temp_data)</div><div class="line">    sendToMe(data_list)</div><div class="line"></div><div class="line">def main():</div><div class="line">    while True:</div><div class="line">        do()</div><div class="line">        time.sleep(43200)</div><div class="line"></div><div class="line">main()</div></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -391,7 +402,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Crawler/" rel="tag"># Crawler</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -400,8 +411,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/26/分享一个自动抢课的脚本/" rel="next" title="分享一个自动抢课的脚本">
-                <i class="fa fa-chevron-left"></i> 分享一个自动抢课的脚本
+              <a href="/2017/05/26/Pandas常用方法/" rel="next" title="Pandas常用方法">
+                <i class="fa fa-chevron-left"></i> Pandas常用方法
               </a>
             
           </div>
@@ -409,10 +420,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/01/26/对应用宝上的应用进行抓取并分析/" rel="prev" title="对应用宝上的应用进行抓取并分析">
-                对应用宝上的应用进行抓取并分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -438,8 +445,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/"
-           data-title="利用Python实现一个抓取笑话并推送到手机的爬虫" data-url="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/">
+      <div class="ds-thread" data-thread-key="2017/05/28/利用进程池实现优雅的多核并行运算/"
+           data-title="利用进程池实现优雅的多核并行运算" data-url="http://wisedoge.github.io/2017/05/28/利用进程池实现优雅的多核并行运算/">
       </div>
     
   </div>
@@ -539,7 +546,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要额外安装的库"><span class="nav-number">1.</span> <span class="nav-text">需要额外安装的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件结构"><span class="nav-number">2.</span> <span class="nav-text">文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法"><span class="nav-number">4.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些坑"><span class="nav-number">1.</span> <span class="nav-text">一些坑</span></a></li></ol></div>
             
 
           </div>

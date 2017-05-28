@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Crawler," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
+<meta name="description" content="数据挖掘竞赛中Pandas库中一些常用的函数。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用Python实现一个抓取笑话并推送到手机的爬虫">
-<meta property="og:url" content="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/index.html">
+<meta property="og:title" content="Pandas常用方法">
+<meta property="og:url" content="http://wisedoge.github.io/2017/05/26/Pandas常用方法/index.html">
 <meta property="og:site_name" content="Doge">
-<meta property="og:description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
-<meta property="og:updated_time" content="2017-01-26T14:04:55.000Z">
+<meta property="og:description" content="数据挖掘竞赛中Pandas库中一些常用的函数。">
+<meta property="og:updated_time" content="2017-05-28T02:57:18.852Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用Python实现一个抓取笑话并推送到手机的爬虫">
-<meta name="twitter:description" content="糗事百科（http://www.qiushibaike.com/） 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。">
+<meta name="twitter:title" content="Pandas常用方法">
+<meta name="twitter:description" content="数据挖掘竞赛中Pandas库中一些常用的函数。">
 
 
 
@@ -121,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/"/>
+  <link rel="canonical" href="http://wisedoge.github.io/2017/05/26/Pandas常用方法/"/>
 
 
 
 
 
-  <title> 利用Python实现一个抓取笑话并推送到手机的爬虫 | Doge </title>
+  <title> Pandas常用方法 | Doge </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/">
+  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/05/26/Pandas常用方法/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Liu">
@@ -274,7 +274,7 @@
             
             
               
-                利用Python实现一个抓取笑话并推送到手机的爬虫
+                Pandas常用方法
               
             
           </h1>
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T21:30:40+08:00">
-                2017-01-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-26T09:31:39+08:00">
+                2017-05-26
               </time>
             
 
@@ -330,8 +330,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/" itemprop="commentCount"></span>
+                <a href="/2017/05/26/Pandas常用方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/26/Pandas常用方法/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -357,18 +357,27 @@
       
 
       
-        <p>糗事百科（<a href="http://www.qiushibaike.com/%EF%BC%89" target="_blank" rel="external">http://www.qiushibaike.com/）</a> 是一个实时更新的笑话网站，会在主页实时显示出最新，最热门的笑话。我们在这里利用Python来制作一个定时抓取笑话，并推送到手机的爬虫，享受DIY的乐趣。<br><a id="more"></a></p>
-<h2 id="需要额外安装的库"><a href="#需要额外安装的库" class="headerlink" title="需要额外安装的库"></a>需要额外安装的库</h2><p>requests<br><code>pip3 install requests</code><br>BeautifulSoup<br><code>pip3 install bs4</code><br>lxml<br><code>pip3 install lxml</code></p>
-<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><ul>
-<li><code>sendEmail.py</code>：邮件发送模块，用在将消息推送到邮箱。</li>
-<li><code>main.py</code>：主程序，负责抓取信息。</li>
-</ul>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>每隔12小时就运行一次爬虫，爬虫将对糗事百科的前5页进行抓取，然后将抓取的内容打包，并推送到自己的手机。</p>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在自己的手机上装一个可接收实时推送的邮箱软件（如网易邮箱大师）。<br>将<code>sendEmail.py</code>内的收件箱和发件箱配置好。<br>将爬虫文件放在一个可以24小时开机的主机（推荐使用云服务器）上，运行<code>python3 main.py</code>。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><em>sendEmail.py</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import smtplib</div><div class="line">from email.mime.text import MIMEText</div><div class="line"></div><div class="line">def sendme(title, text):</div><div class="line">    msg = MIMEText(text)</div><div class="line">    msg[&apos;Subject&apos;] = title</div><div class="line">    msg[&apos;From&apos;] = &quot;此处填入你用来发送邮件用的邮箱&quot;</div><div class="line">    msg[&apos;To&apos;] = &quot;此处填入你的接收端邮箱&quot;</div><div class="line">    s = smtplib.SMTP(&apos;smtp.126.com&apos;)</div><div class="line">    s.login(&apos;此处填入发件箱用户名&apos;, &apos;此处填入发件箱密码&apos;)</div><div class="line">    s.send_message(msg)</div><div class="line">    s.quit()</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    sendme(&quot;Hello World&quot;, &quot;Welcome&quot;)</div></pre></td></tr></table></figure>
-<p><em>main.py</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">from bs4 import BeautifulSoup</div><div class="line">from sendEmail import sendme</div><div class="line"></div><div class="line">import requests</div><div class="line">import lxml</div><div class="line">import time</div><div class="line">def crawl(url):</div><div class="line">    try:</div><div class="line">        html = requests.get(url)</div><div class="line">    except:</div><div class="line">        with open(&quot;log.log&quot;,&quot;a&quot;) as file:</div><div class="line">            file.write(&quot;Http error on &quot; + time.ctime())</div><div class="line">        time.sleep(60)</div><div class="line">        return None</div><div class="line">    soup = BeautifulSoup(html.text, &apos;lxml&apos;)</div><div class="line">    data_list = []</div><div class="line">    for cont in soup.find_all(&quot;div&quot;, &#123;&quot;class&quot;:&quot;content&quot;&#125;):</div><div class="line">        raw_data = cont.get_text()</div><div class="line">        data = raw_data.replace(&quot;\n&quot;,&quot;&quot;)</div><div class="line">        data_list.append(data)</div><div class="line">    return data_list</div><div class="line"></div><div class="line">def sendToMe(data_list):</div><div class="line">    email_text  = &apos;&apos;</div><div class="line">    for i in data_list:</div><div class="line">        email_text += (i + &quot;\n\n&quot;)</div><div class="line">    try:</div><div class="line">        sendme(time.ctime(), email_text)</div><div class="line">    except:</div><div class="line">        with open(&quot;log.log&quot;,&quot;a&quot;) as file:</div><div class="line">            file.write(&quot;Send email error on &quot; + time.ctime())</div><div class="line">    print(&quot;success&quot;,time.ctime())</div><div class="line"></div><div class="line">def do():</div><div class="line">    data_list = []</div><div class="line">    for i in range(1,6):</div><div class="line">        url = &apos;http://www.qiushibaike.com/8hr/page/%s/?s=4906081&apos;%str(i)</div><div class="line">        temp_data = crawl(url)</div><div class="line">        data_list.extend(temp_data)</div><div class="line">    sendToMe(data_list)</div><div class="line"></div><div class="line">def main():</div><div class="line">    while True:</div><div class="line">        do()</div><div class="line">        time.sleep(43200)</div><div class="line"></div><div class="line">main()</div></pre></td></tr></table></figure>
+        <p>数据挖掘竞赛中Pandas库中一些常用的函数。</p>
+<a id="more"></a>
+<h3 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h3><p><code>train[&#39;Has_Cabin&#39;] = train[&quot;Cabin&quot;].apply(lambda x: 0 if type(x) == float else 1)</code></p>
+<p>传入一个函数，应用于一个列。</p>
+<h3 id="重载"><a href="#重载" class="headerlink" title="重载[]"></a>重载[]</h3><p><code>dataset.loc[dataset[&#39;FamilySize&#39;] == 1, &#39;IsAlone&#39;] = 1</code></p>
+<p>将将dataset的FamilySize字段等于1的列的IsAlone列的值设为1。</p>
+<p><code>numeric_features = features.loc[:,[&#39;LotFrontage&#39;, &#39;LotArea&#39;, &#39;GrLivArea&#39;, &#39;TotalSF&#39;]]</code></p>
+<h3 id="重载-amp"><a href="#重载-amp" class="headerlink" title="重载&amp;"></a>重载&amp;</h3><p><code>dataset.loc[(dataset[&#39;Fare&#39;] &gt; 7.91) &amp; (dataset[&#39;Fare&#39;] &lt;= 14.454), &#39;Fare&#39;] = 1</code></p>
+<p>将7.91&lt;Fare&lt;=14.454的列的Fare列设置为1。</p>
+<h3 id="isnull"><a href="#isnull" class="headerlink" title="isnull()"></a>isnull()</h3><p><code>age_null_count = dataset[&#39;Age&#39;].isnull().sum()</code></p>
+<p>找出缺失项。</p>
+<h3 id="fillna"><a href="#fillna" class="headerlink" title="fillna()"></a>fillna()</h3><p><code>dataset[&#39;Embarked&#39;] = dataset[&#39;Embarked&#39;].fillna(&#39;S&#39;)</code></p>
+<p>将缺失项填充为’S’。</p>
+<h3 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h3><p><code>dataset[&#39;Title&#39;] = dataset[&#39;Title&#39;].replace(&#39;Mlle&#39;, &#39;Miss&#39;)</code></p>
+<p>替换给定值。</p>
+<h3 id="corr"><a href="#corr" class="headerlink" title="corr()"></a>corr()</h3><p><code>train.astype(float).corr()</code></p>
+<p>求相关系数矩阵。</p>
+<h3 id="concat"><a href="#concat" class="headerlink" title="concat()"></a>concat()</h3><p><code>NAs = pd.concat([train.isnull().sum(), test.isnull().sum()], axis=1, keys=[&#39;Train&#39;, &#39;Test&#39;])</code></p>
+<p>拼接两列.</p>
+<h3 id="factorize"><a href="#factorize" class="headerlink" title="factorize()"></a>factorize()</h3><p>将字符数据字符化，一个字符对应一个数字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dic = &#123;&quot;X&quot;: [&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;c&quot;], &quot;Y&quot;: [1, 2, 3, 4]&#125;</div><div class="line">df = pd.DataFrame(dic)</div><div class="line"></div><div class="line">pd.factorize(df[&apos;X&apos;])[0]</div><div class="line"></div><div class="line">Output:</div><div class="line">array([0, 0, 1, 2], dtype=int64)</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -391,7 +400,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Crawler/" rel="tag"># Crawler</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -400,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/26/分享一个自动抢课的脚本/" rel="next" title="分享一个自动抢课的脚本">
-                <i class="fa fa-chevron-left"></i> 分享一个自动抢课的脚本
+              <a href="/2017/05/22/更Pythonic的单例实现/" rel="next" title="更Pythonic的单例实现">
+                <i class="fa fa-chevron-left"></i> 更Pythonic的单例实现
               </a>
             
           </div>
@@ -410,8 +419,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/01/26/对应用宝上的应用进行抓取并分析/" rel="prev" title="对应用宝上的应用进行抓取并分析">
-                对应用宝上的应用进行抓取并分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/28/利用进程池实现优雅的多核并行运算/" rel="prev" title="利用进程池实现优雅的多核并行运算">
+                利用进程池实现优雅的多核并行运算 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -438,8 +447,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/"
-           data-title="利用Python实现一个抓取笑话并推送到手机的爬虫" data-url="http://wisedoge.github.io/2017/01/26/利用Python实现一个抓取笑话并推送到手机的爬虫/">
+      <div class="ds-thread" data-thread-key="2017/05/26/Pandas常用方法/"
+           data-title="Pandas常用方法" data-url="http://wisedoge.github.io/2017/05/26/Pandas常用方法/">
       </div>
     
   </div>
@@ -539,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要额外安装的库"><span class="nav-number">1.</span> <span class="nav-text">需要额外安装的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件结构"><span class="nav-number">2.</span> <span class="nav-text">文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法"><span class="nav-number">4.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#apply"><span class="nav-number">1.</span> <span class="nav-text">apply()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载"><span class="nav-number">2.</span> <span class="nav-text">重载[]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载-amp"><span class="nav-number">3.</span> <span class="nav-text">重载&</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isnull"><span class="nav-number">4.</span> <span class="nav-text">isnull()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fillna"><span class="nav-number">5.</span> <span class="nav-text">fillna()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#replace"><span class="nav-number">6.</span> <span class="nav-text">replace()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#corr"><span class="nav-number">7.</span> <span class="nav-text">corr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concat"><span class="nav-number">8.</span> <span class="nav-text">concat()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#factorize"><span class="nav-number">9.</span> <span class="nav-text">factorize()</span></a></li></ol></div>
             
 
           </div>
