@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Crawler," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="我们对维基百科的10W+个词条的摘要进行了数据统计，分析出了Wikipedia的高频词汇排名，供参考用。">
+<meta name="description" content="with语句的目的时简化try/finally模式，可以保证一段代码运行完毕后执行某项操作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="维基百科高频词排名">
-<meta property="og:url" content="http://wisedoge.github.io/2017/01/26/维基百科高频词排名/index.html">
+<meta property="og:title" content="使用with语句">
+<meta property="og:url" content="http://wisedoge.github.io/2017/05/30/使用with语句/index.html">
 <meta property="og:site_name" content="Doge">
-<meta property="og:description" content="我们对维基百科的10W+个词条的摘要进行了数据统计，分析出了Wikipedia的高频词汇排名，供参考用。">
-<meta property="og:updated_time" content="2017-01-26T14:04:55.000Z">
+<meta property="og:description" content="with语句的目的时简化try/finally模式，可以保证一段代码运行完毕后执行某项操作。">
+<meta property="og:updated_time" content="2017-05-30T11:26:45.249Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="维基百科高频词排名">
-<meta name="twitter:description" content="我们对维基百科的10W+个词条的摘要进行了数据统计，分析出了Wikipedia的高频词汇排名，供参考用。">
+<meta name="twitter:title" content="使用with语句">
+<meta name="twitter:description" content="with语句的目的时简化try/finally模式，可以保证一段代码运行完毕后执行某项操作。">
 
 
 
@@ -121,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://wisedoge.github.io/2017/01/26/维基百科高频词排名/"/>
+  <link rel="canonical" href="http://wisedoge.github.io/2017/05/30/使用with语句/"/>
 
 
 
 
 
-  <title> 维基百科高频词排名 | Doge </title>
+  <title> 使用with语句 | Doge </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/01/26/维基百科高频词排名/">
+  <link itemprop="mainEntityOfPage" href="http://wisedoge.github.io/2017/05/30/使用with语句/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Liu">
@@ -274,7 +274,7 @@
             
             
               
-                维基百科高频词排名
+                使用with语句
               
             
           </h1>
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T21:30:20+08:00">
-                2017-01-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-30T19:13:19+08:00">
+                2017-05-30
               </time>
             
 
@@ -330,8 +330,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/01/26/维基百科高频词排名/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/26/维基百科高频词排名/" itemprop="commentCount"></span>
+                <a href="/2017/05/30/使用with语句/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/30/使用with语句/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -357,9 +357,20 @@
       
 
       
-        <p>我们对维基百科的10W+个词条的摘要进行了数据统计，分析出了Wikipedia的高频词汇排名，供参考用。<br><a id="more"></a></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">dic = &#123;&#125;</div><div class="line">wordscount = 0</div><div class="line">for data in datas:</div><div class="line">    raw = data[2].lower()</div><div class="line">    pagestr = raw.split(&quot; &quot;)</div><div class="line">    wordscount += len(pagestr)</div><div class="line">    for i in pagestr:</div><div class="line">        try:</div><div class="line">            dic[i] += 1</div><div class="line">        except:</div><div class="line">            dic[i] = 1</div><div class="line">truedic = sorted(dic.items(), key = lambda d:d[1], reverse = True)</div><div class="line">print(&quot;words: &quot; + str(wordscount))</div><div class="line"></div><div class="line">truedic[:50]</div></pre></td></tr></table></figure>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">words: 6595963</div><div class="line">[(&apos;the&apos;, 467276),</div><div class="line"> (&apos;of&apos;, 282385),</div><div class="line"> (&apos;and&apos;, 203952),</div><div class="line"> (&apos;a&apos;, 173925),</div><div class="line"> (&apos;in&apos;, 171569),</div><div class="line"> (&apos;is&apos;, 164147),</div><div class="line"> (&apos;to&apos;, 105675),</div><div class="line"> (&apos;as&apos;, 67017),</div><div class="line"> (&apos;by&apos;, 53766),</div><div class="line"> (&apos;or&apos;, 52854),</div><div class="line"> (&apos;it&apos;, 50674),</div><div class="line"> (&apos;for&apos;, 50511),</div><div class="line"> (&apos;was&apos;, 48917),</div><div class="line"> (&apos;an&apos;, 39729),</div><div class="line"> (&apos;with&apos;, 34944),</div><div class="line"> (&apos;that&apos;, 34817),</div><div class="line"> (&apos;on&apos;, 33998),</div><div class="line"> (&apos;are&apos;, 33518),</div><div class="line"> (&apos;from&apos;, 30306),</div><div class="line"> (&apos;which&apos;, 23828),</div><div class="line"> (&apos;its&apos;, 18825),</div><div class="line"> (&apos;also&apos;, 18257),</div><div class="line"> (&apos;be&apos;, 17497),</div><div class="line"> (&apos;at&apos;, 17422),</div><div class="line"> (&apos;used&apos;, 16650),</div><div class="line"> (&apos;has&apos;, 15608),</div><div class="line"> (&apos;united&apos;, 14383),</div><div class="line"> (&apos;one&apos;, 14260),</div><div class="line"> (&apos;known&apos;, 13378),</div><div class="line"> (&apos;other&apos;, 13336),</div><div class="line"> (&apos;this&apos;, 11798),</div><div class="line"> (&apos;he&apos;, 11420),</div><div class="line"> (&apos;most&apos;, 11296),</div><div class="line"> (&apos;such&apos;, 10809),</div><div class="line"> (&apos;international&apos;, 9926),</div><div class="line"> (&apos;first&apos;, 9771),</div><div class="line"> (&apos;his&apos;, 9252),</div><div class="line"> (&apos;have&apos;, 9250),</div><div class="line"> (&apos;can&apos;, 9140),</div><div class="line"> (&apos;new&apos;, 9055),</div><div class="line"> (&apos;states&apos;, 8902),</div><div class="line"> (&apos;their&apos;, 8570),</div><div class="line"> (&apos;not&apos;, 8560),</div><div class="line"> (&apos;standard&apos;, 8538),</div><div class="line"> (&apos;system&apos;, 8533),</div><div class="line"> (&apos;may&apos;, 8508),</div><div class="line"> (&apos;city&apos;, 8331),</div><div class="line"> (&apos;language&apos;, 8300),</div><div class="line"> (&apos;but&apos;, 8252),</div><div class="line"> (&apos;part&apos;, 8245)]</div></pre></td></tr></table></figure>
+        <p><code>with</code>语句的目的时简化<code>try/finally</code>模式，可以保证一段代码运行完毕后执行某项操作。</p>
+<a id="more"></a>
+<p>设想我们要实现一个文件读写的功能，下面是<code>Java</code>式的方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    文件写入类</div><div class="line">    """</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename)</span>:</span></div><div class="line">        self.filename = filename</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(self, content)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        :param content: 写入的内容 </div><div class="line">        :return: None</div><div class="line">        """</div><div class="line">        print(f<span class="string">"Writing into [&#123;self.filename&#125;] -&gt; &#123;content&#125;"</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"Open"</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"Close"</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f = File(<span class="string">'conf.txt'</span>)</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        f.open()</div><div class="line">        f.write(<span class="string">"sudo apt install vim"</span>)</div><div class="line">        <span class="keyword">raise</span> TypeError <span class="comment"># 假装报错</span></div><div class="line">    <span class="keyword">except</span> TypeError:</div><div class="line">        print(<span class="string">"TypeError"</span>)</div><div class="line"></div><div class="line">    <span class="keyword">finally</span>:</div><div class="line">        f.close()</div></pre></td></tr></table></figure>
+<p>这种方式非常冗杂，而且用户会经常忘记关闭文件，造成资源浪费。下面是<em>Pythonic</em>的写法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    文件写入类</div><div class="line">    """</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename)</span>:</span></div><div class="line">        self.filename = filename</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(self, content)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        :param content: 写入的内容 </div><div class="line">        :return: None</div><div class="line">        """</div><div class="line">        print(f<span class="string">"Writing into [&#123;self.filename&#125;] -&gt; &#123;content&#125;"</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"Open"</span>)</div><div class="line">        <span class="keyword">return</span> self</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_val, exc_tb)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        :param exc_type: 异常类</div><div class="line">        :param exc_val: 异常实例</div><div class="line">        :param exc_tb: 异常轨迹</div><div class="line">        :return: 返回True告诉解释器异常已经被处理，否则返回False</div><div class="line">        """</div><div class="line">        <span class="keyword">if</span> exc_type <span class="keyword">is</span> TypeError:</div><div class="line">            print(<span class="string">'TypeError'</span>)</div><div class="line">        print(<span class="string">"Close"</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    <span class="keyword">with</span> File(<span class="string">'conf.txt'</span>) <span class="keyword">as</span> f:</div><div class="line">        f.write(<span class="string">"sudo apt install vim"</span>)</div><div class="line">        <span class="keyword">raise</span> TypeError</div></pre></td></tr></table></figure>
+<p>要实现<code>with</code>语句，只需复写<code>__enter__</code>和<code>__exit__</code>方法即可。</p>
+<p>要注意的是</p>
+<ul>
+<li><code>__enter__</code>方法不能传入其他参数，如果希望使用<code>as</code>子句，则返回有意义的值，否则返回<code>None</code>。</li>
+<li><code>__exit__</code>函数需要传入的参数如注释，如果异常都被正确的处理了，需要返回<code>True</code>，否则返回<code>False</code>。</li>
+<li><code>with</code>语句不会创建新的作用域。</li>
+</ul>
+
       
     </div>
 
@@ -382,7 +393,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Crawler/" rel="tag"># Crawler</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -391,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/26/将自己的Python模块的打包并发布到Pypi/" rel="next" title="将自己的Python模块的打包并发布到Pypi">
-                <i class="fa fa-chevron-left"></i> 将自己的Python模块的打包并发布到Pypi
+              <a href="/2017/05/30/一些标准库中的装饰器/" rel="next" title="一些标准库中的装饰器">
+                <i class="fa fa-chevron-left"></i> 一些标准库中的装饰器
               </a>
             
           </div>
@@ -400,10 +411,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/01/26/利用Python-Redis打造简易的实时聊天室/" rel="prev" title="利用Python-Redis打造简易的实时聊天室">
-                利用Python-Redis打造简易的实时聊天室 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -429,8 +436,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/26/维基百科高频词排名/"
-           data-title="维基百科高频词排名" data-url="http://wisedoge.github.io/2017/01/26/维基百科高频词排名/">
+      <div class="ds-thread" data-thread-key="2017/05/30/使用with语句/"
+           data-title="使用with语句" data-url="http://wisedoge.github.io/2017/05/30/使用with语句/">
       </div>
     
   </div>
@@ -454,17 +461,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -520,22 +518,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">2.</span> <span class="nav-text">结果</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
     </div>
